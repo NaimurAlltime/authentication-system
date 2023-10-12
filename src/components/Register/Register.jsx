@@ -1,10 +1,10 @@
 // Initialization for ES Users
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { initTE, Input, Ripple } from "tw-elements";
-import { AuthContext } from "../../providers/AuthProvider";
+import { AuthContext } from "./../../providers/AuthProvider";
 
 initTE({ Input, Ripple });
 
@@ -13,8 +13,7 @@ const Register = () => {
     useContext(AuthContext);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+
   const {
     register,
     handleSubmit,
@@ -52,23 +51,7 @@ const Register = () => {
           showConfirmButton: false,
           timer: 1500,
         });
-        // store user data in database
-        const saveStudent = {
-          name: loggedUser.displayName,
-          email: loggedUser.email,
-          image: loggedUser.photoURL,
-        };
-        fetch("https://music-fairy-server-naimuralltime.vercel.app/students", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(saveStudent),
-        })
-          .then((res) => res.json())
-          .then(() => {
-            navigate(from, { replace: true });
-          });
+        navigate("/user-profile");
       })
       .catch((error) => {
         console.log(error.message);
@@ -95,12 +78,13 @@ const Register = () => {
               {/* <!-- name input --> */}
               <div className="relative mb-6" data-te-input-wrapper-init>
                 <input
+                  required
                   type="text"
                   name="name"
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput1"
                   placeholder="Your Name"
-                  {...register("name", { required: true })}
+                  {...register("name")}
                 />
                 {errors.name && (
                   <span className="text-red-600">Name is required</span>
@@ -135,12 +119,13 @@ const Register = () => {
               {/* <!-- Email input --> */}
               <div className="relative mb-6" data-te-input-wrapper-init>
                 <input
+                  required
                   type="text"
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput3"
                   placeholder="Email address"
                   name="email"
-                  {...register("email", { required: true })}
+                  {...register("email")}
                 />
                 {errors.email && (
                   <span className="text-red-600">Email is required</span>
@@ -155,13 +140,13 @@ const Register = () => {
               {/* <!-- Password input --> */}
               <div className="relative mb-6" data-te-input-wrapper-init>
                 <input
+                  required
                   type="password"
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput33"
                   placeholder="Password"
                   name="password"
                   {...register("password", {
-                    required: true,
                     minLength: 6,
                     pattern: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])(?=.*[a-z])/,
                   })}
@@ -188,17 +173,22 @@ const Register = () => {
               {/* <!--Confirm Password input --> */}
               <div className="relative mb-6" data-te-input-wrapper-init>
                 <input
+                  required
                   type="password"
                   className="peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[2.15] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                   id="exampleFormControlInput36"
                   placeholder="Confirm Password"
                   name="confirmPassword"
-                  {...register("confirmPassword", {
-                    validate: (match) => {
-                      const password = getValues("password");
-                      return match === password || "Passwords do not match!";
-                    },
-                  })}
+                  {...register(
+                    "confirmPassword",
+
+                    {
+                      validate: (match) => {
+                        const password = getValues("password");
+                        return match === password || "Passwords do not match!";
+                      },
+                    }
+                  )}
                 />
                 {errors.confirmPassword && (
                   <p className="text-red-600">
@@ -226,7 +216,7 @@ const Register = () => {
               {/* <!-- Submit button --> */}
               <input
                 type="submit"
-                value="Sign Up"
+                value="Register Now"
                 className="inline-block w-full rounded bg-primary px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
                 data-te-ripple-init
                 data-te-ripple-color="light"

@@ -15,8 +15,10 @@
     "match-sorter": "^6.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.47.0",
     "react-router-dom": "^6.16.0",
     "sort-by": "^1.2.0",
+    "sweetalert2": "^11.7.32",
     "tw-elements": "^1.0.0",
     "tw-elements-react": "^1.0.0-alpha1"
   },
